@@ -1,0 +1,24 @@
+# Personal captured data — NEVER commit. Contains your real browsing metadata.
+logs/
+
+# macOS
+.DS_Store
+
+# Python venv & bytecode
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# py2app / build output
+dist/
+build/build/
+build/dist/
+build/pkgroot/
+build/pkgscripts/
+build/dmgroot/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp

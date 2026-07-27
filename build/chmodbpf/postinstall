@@ -1,0 +1,32 @@
+#!/bin/bash
+# Runs after Install ChmodBPF.pkg drops its files. Ensures the access_bpf
+# group exists, adds the installing user to it, and starts the LaunchDaemon.
+
+set -e
+
+GROUP=access_bpf
+GID=1338
+
+# Create the group (or reuse Wireshark's if it's already there).
+if ! dscl . -read /Groups/$GROUP > /dev/null 2>&1; then
+    dscl . -create /Groups/$GROUP
+    dscl . -create /Groups/$GROUP PrimaryGroupID $GID
+    dscl . -create /Groups/$GROUP RealName "BPF packet-capture access"
+    dscl . -create /Groups/$GROUP Password '*'
+fi
+
+# Add whoever is at the console to the group.
+CONSOLE_USER=$(stat -f%Su /dev/console)
+if [ -n "$CONSOLE_USER" ] && [ "$CONSOLE_USER" != "root" ]; then
+    dseditgroup -o edit -a "$CONSOLE_USER" -t user $GROUP 2>/dev/null || true
+fi
+
+# Ensure the daemon binary is executable (pkgbuild sometimes strips the bit).
+chmod +x "/Library/Application Support/SSO Watcher/ChmodBPF/ChmodBPF"
+
+# (Re)load the LaunchDaemon so it runs immediately.
+DAEMON=/Library/LaunchDaemons/org.sso-watcher.ChmodBPF.plist
+launchctl bootout system "$DAEMON" 2>/dev/null || true
+launchctl bootstrap system "$DAEMON"
+
+exit 0
