@@ -51,40 +51,6 @@ The dashboard opens automatically at [http://127.0.0.1:8765](http://127.0.0.1:87
 Click **Start capture** to begin. Double-click `stop.command` or hit
 `Ctrl-C` in Terminal to shut down.
 
-## Build a distributable .app + .dmg
-
-Requires Xcode Command Line Tools:
-
-```bash
-xcode-select --install
-./build/build.sh
-```
-
-That produces `dist/SSO Watcher.dmg` containing:
-
-- **SSO Watcher.app** — ad-hoc-signed py2app bundle
-- **Install ChmodBPF.pkg** — one-time LaunchDaemon installer that grants an
-  `access_bpf` group `rw` on `/dev/bpf*` at boot (the same pattern Wireshark
-  uses so packet capture works without `sudo`).
-
-End-user install flow:
-
-1. Double-click the `.dmg`.
-2. Right-click **Install ChmodBPF.pkg** → **Open** (macOS blocks unsigned
-   installers by default; alternately: System Settings → Privacy & Security
-   → **Open Anyway**). Enter admin password once.
-3. Drag **SSO Watcher.app** to Applications.
-4. Log out and back in so the new group membership takes effect.
-5. Launch from Applications. No password prompt after this.
-
-For real Developer ID signing / notarization, set the env vars before build:
-
-```bash
-DEVELOPER_ID="Developer ID Application: Your Name (TEAMID)" \
-DEVELOPER_ID_INSTALLER="Developer ID Installer: Your Name (TEAMID)" \
-  ./build/build.sh
-```
-
 ## How it works
 
 1. Auto-discovers active `en*` and `utun*` interfaces (physical + VPN).
