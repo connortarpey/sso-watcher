@@ -5,6 +5,10 @@ interface. Parses TLS ClientHello SNI and DNS queries, matches them against a
 catalog of known authentication endpoints, correlates each event to a source
 device, and streams the result to a browser dashboard over WebSocket.
 
+<img width="1498" height="805" alt="Screenshot 2026-07-27 at 5 55 33 PM" src="https://github.com/user-attachments/assets/8f8054bb-dc9e-40e3-8cb0-c8b4ef821617" />
+
+
+
 **No credentials are extracted or stored.** TLS payload is never decrypted —
 only visible connection metadata (hostnames from SNI and DNS) is inspected,
 the same information Wireshark or your router already sees.
