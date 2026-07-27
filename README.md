@@ -1,6 +1,6 @@
 # SSO Watcher
 
-Real-time detection of SSO / auth-provider login flows on a local network
+Developed a real-time detection of SSO / auth-provider login flows on a local network
 interface. Parses TLS ClientHello SNI and DNS queries, matches them against a
 catalog of known authentication endpoints, correlates each event to a source
 device, and streams the result to a browser dashboard.
